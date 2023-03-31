@@ -11,6 +11,8 @@ extends Node2D
 @onready var _hdr = $WorldEnvironment
 
 func _ready() -> void:
+	DisplayServer.window_set_size(Vector2i(1024*2, 600*2))
+	
 	var layers = {
 		"main": _main_layer,
 		"shot": _shot_layer,
