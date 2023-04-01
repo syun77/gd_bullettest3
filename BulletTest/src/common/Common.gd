@@ -1,6 +1,6 @@
 extends Node
 
-const ParticleObj = preload("res://src/particle/Particle.tscn")
+const PARTICLE_OBJ = preload("res://src/particle/Particle.tscn")
 const TIMER_SCREEN_SHAKE = 1.0
 
 # 画面のサイズ.
@@ -34,19 +34,33 @@ func get_player() -> Player:
 		return null
 	return _player
 
-func get_aim(pos:Vector2) -> float:
+func get_target() -> Vector2:
 	var player = get_player()
 	var target = _prev_target_pos
 	if player != null:
 		target = player.position
-	
+	# ターゲットの座標を保存しておく.
+	_prev_target_pos = target
+	return target
+
+func get_aim(pos:Vector2) -> float:
+	var target = get_target()
 	var d = target - pos
 	var aim = rad_to_deg(atan2(-d.y, d.x))
 	
-	# ターゲットの座標を保存しておく.
-	_prev_target_pos = target
-	
 	return aim
+
+func get_dist(pos:Vector2) -> float:
+	var target = get_target()
+	var d = target - pos
+	return d.length()
+
+func add_particle(pos:Vector2, t:float, deg:float, speed:float):
+	var p = PARTICLE_OBJ.instantiate()
+	p.position = pos
+	p.start(t, deg, speed)
+	get_layer("particle").add_child(p)
+	return p
 
 ## 角度差を求める.
 func diff_angle(now:float, next:float) -> float:

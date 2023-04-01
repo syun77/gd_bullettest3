@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://c4yc62525550"]
+[gd_scene load_steps=3 format=3 uid="uid://c4yc62525550"]
 
 [ext_resource type="Script" path="res://src/Player.gd" id="1_cj14x"]
 
-[node name="Player" type="Node2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_iph73"]
+radius = 12.0416
+
+[node name="Player" type="Area2D"]
 script = ExtResource("1_cj14x")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -12,3 +15,6 @@ offset_right = 16.0
 offset_bottom = 16.0
 color = Color(0.333333, 0.858824, 1, 1)
 metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_iph73")

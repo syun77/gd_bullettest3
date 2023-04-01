@@ -49,6 +49,10 @@ var _cnt3 = 0
 var _target = Vector2.ZERO
 var _start = Vector2.ZERO
 
+func hit(velocity:Vector2) -> void:
+	# TODO: ヒット処理.
+	pass
+
 func _ready() -> void:
 	_target = position
 	_start = position

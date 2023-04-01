@@ -9,6 +9,8 @@ void fragment() {
     // 色を取得
     vec4 color = texture(TEXTURE, vec2(UV.x+TIME*scroll_speed, UV.y));
 	color *= 0.5;
+	color.x *= 1.1;
+	color.z *= 1.1;
     // 反映
     COLOR = color;
 }

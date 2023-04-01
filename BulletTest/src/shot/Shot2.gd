@@ -2,7 +2,7 @@ extends Area2D
 
 class_name Shot2
 
-onready var _line = $Line2D
+@onready var _line = $Line2D
 
 # 移動方向.
 var _deg := 0.0
@@ -15,26 +15,21 @@ var _timer := 0.0
 ## 速度をベクトルとして取得する.	
 func get_velocity() -> Vector2:
 	var v = Vector2()
-	var rad = deg2rad(_deg)
+	var rad = deg_to_rad(_deg)
 	v.x = cos(rad) * _speed
 	v.y = -sin(rad) * _speed
 	return v
 
 ## 消滅する
 func vanish() -> void:
-	if Common.is_particle() == false:
-		# パーティクルなし.
-		queue_free()
-		return
-	
 	# 逆方向にパーティクルを発生させる.
 	var v = get_velocity() * -1
 	var spd = v.length()
 	for i in range(4):
 		var rad = atan2(-v.y, v.x)
-		var deg = rad2deg(rad)
-		deg += rand_range(-30, 30)
-		var speed = spd * rand_range(0.1, 0.5)
+		var deg = rad_to_deg(rad)
+		deg += randf_range(-30, 30)
+		var speed = spd * randf_range(0.1, 0.5)
 		Common.add_particle(position, 1.0, deg, speed)
 	queue_free()
 
@@ -55,7 +50,7 @@ func _search_target():
 	return target	
 ## 速度を設定.
 func set_velocity(v:Vector2) -> void:
-	_deg = rad2deg(atan2(-v.y, v.x))
+	_deg = rad_to_deg(atan2(-v.y, v.x))
 	_speed = v.length()
 	
 ## 更新.
@@ -71,7 +66,7 @@ func _process(delta: float) -> void:
 		# 速度を更新.
 		var d = target.position - position
 		# 狙い撃ち角度を計算する.
-		var aim = rad2deg(atan2(-d.y, d.x))
+		var aim = rad_to_deg(atan2(-d.y, d.x))
 		var diff = Common.diff_angle(_deg, aim)
 		# 旋回する.
 		_deg += diff * delta * 3 + (diff * _timer * (delta+0.5))
