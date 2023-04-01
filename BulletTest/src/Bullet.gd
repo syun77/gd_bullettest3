@@ -16,6 +16,12 @@ var _accel = Vector2.ZERO # 加速度.
 func vanish() -> void:
 	queue_free()
 
+## 移動方向を取得する.
+func get_direction() -> float:
+	return rad_to_deg(atan2(-_velocity.y, _velocity.x))
+func get_speed() -> float:
+	return _velocity.length()
+
 ## アイテム登場.
 func add_item() -> void:
 	var item = ITEM_OBJ.instantiate()

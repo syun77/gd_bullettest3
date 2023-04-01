@@ -39,7 +39,8 @@ enum eType {
 	WHIP,
 	NWAY,
 	NWAY_4_5,
-	NWAY_AND_MOVE
+	NWAY_AND_MOVE,
+	SIDE_WINDER,
 }
 @export var type := eType.AIM
 
@@ -102,7 +103,7 @@ func _physics_process(delta: float) -> void:
 				var d = 360 / cnt # 角度差を求める.
 				for i in range(cnt):
 					var deg = d * i # 発射角度を求める.
-					_bullet(deg, 300)
+					_bullet(deg, 200)
 		eType.GRAVITY:
 			if _cnt%10 == 0:
 				var deg = randf_range(60, 120)
@@ -154,6 +155,30 @@ func _physics_process(delta: float) -> void:
 					var d = _cnt2%3
 					_nway(3+d, aim, 60, 300+50*i, 0.1 * i)
 				_cnt2 += 1
+		eType.SIDE_WINDER:
+			var t = _cnt%500
+			if t%2 == 0:
+				var d = 60
+				var spd = 1000
+				if t < 60:
+					for v in [-d, -d/2, d/2, d]:
+						_bullet(270+v, spd)
+				elif t < 380:
+					# 針弾を発射.
+					if t%20 == 0:
+						for i in range(3):
+							var d2 = 270 + 5 * sin(t*0.1)
+							var sp = 300 + t
+							var delay = i * 0.02
+							_bullet(d2, sp, delay)
+					t -= 60
+					for v in [-d, -d/2, d/2, d]:
+						var d2 = 30 * sin(t*0.03)
+						_bullet(270+v+d2, spd)
+				else:
+					pass
+				
+				
 
 func _aim() -> float:
 	return Common.get_aim(position)

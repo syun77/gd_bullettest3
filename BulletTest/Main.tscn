@@ -61,7 +61,7 @@ position = Vector2(512, 512)
 [node name="Enemy" parent="MainLayer" instance=ExtResource("4")]
 position = Vector2(512, 128)
 scale = Vector2(0.5, 0.5)
-type = 5
+type = 10
 
 [node name="ShotLayer" type="CanvasLayer" parent="."]
 layer = 4
@@ -106,6 +106,21 @@ offset_right = 92.0
 offset_bottom = 135.0
 text = "かすり"
 
+[node name="CheckBoxPush" type="CheckBox" parent="UILayer"]
+offset_left = 16.0
+offset_top = 136.0
+offset_right = 92.0
+offset_bottom = 167.0
+text = "押し返し"
+
+[node name="CheckBoxGuard" type="CheckBox" parent="UILayer"]
+offset_left = 16.0
+offset_top = 168.0
+offset_right = 108.0
+offset_bottom = 199.0
+text = "ガード
+"
+
 [node name="Copyright" type="Label" parent="UILayer"]
 offset_left = 792.0
 offset_top = 568.0
@@ -116,6 +131,12 @@ theme_override_colors/font_color = Color(0.756863, 0.756863, 0.756863, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 1
 text = "自機素材：有限会社エムツー様"
+
+[node name="OptionButtonEnemy" type="OptionButton" parent="UILayer"]
+offset_left = 8.0
+offset_top = 248.0
+offset_right = 112.0
+offset_bottom = 268.0
 
 [node name="MainCamera" type="Camera2D" parent="."]
 position = Vector2(512, 300)

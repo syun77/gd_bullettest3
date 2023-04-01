@@ -78,3 +78,4 @@ var is_destroy = false
 var is_absorb = false
 var is_reflect = false
 var is_buzz = false
+var is_guard = false
