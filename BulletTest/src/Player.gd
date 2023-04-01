@@ -7,6 +7,7 @@ const SHOT2_OBJ = preload("res://src/shot/Shot2.tscn")
 const ABSORB_OBJ = preload("res://src/particle/Absorb.tscn")
 
 const TIMER_BARRIER_HIT = 1.0
+const TIMER_LASER = (0.016 * 16)
 
 @onready var _spr = $Sprite
 @onready var _barrier_spr = $Barrier/Sprite
@@ -15,6 +16,7 @@ var _shot_timer = 0.0
 var _shot_cnt = 0
 var _absorb_timer = 0.0
 var _absorb_scale_base = Vector2.ONE
+var _laser_timer = 0.0
 
 func _ready() -> void:
 	_absorb_scale_base = _barrier_spr.scale
@@ -40,6 +42,20 @@ func _physics_process(delta: float) -> void:
 
 func _shot(delta:float) -> void:
 	_shot_timer -= delta
+	
+	if _laser_timer > 0:
+		_shot_cnt += 1
+		if _shot_cnt%2 == 0:
+			_laser_timer -= delta
+			_shot_laser()
+		return
+		
+	if Input.is_action_just_pressed("ui_cancel"):
+		# 力の解放.
+		_laser_timer = TIMER_LASER
+		_shot_laser()
+		return
+		
 	if Input.is_action_pressed("ui_accept") == false:
 		return
 	if _shot_timer > 0:
@@ -57,6 +73,17 @@ func _shot(delta:float) -> void:
 		var deg = 90 + randf_range(0, 10) * i * -1
 		Common.get_layer("shot").add_child(shot)
 		shot.setup(pos, deg, 1500)
+		
+func _shot_laser() -> void:
+	var shot = SHOT2_OBJ.instantiate()
+	Common.get_layer("shot").add_child(shot)
+	shot.position = position
+	var v = Vector2()
+	var rad = deg_to_rad(270 + randf_range(-45, 45))
+	var spd = randf_range(100, 1000)
+	v.x = cos(rad) * spd
+	v.y = -sin(rad) * spd
+	shot.set_velocity(v)
 
 func _update_absorb(delta:float) -> void:
 	if _absorb_timer <= 0.0:

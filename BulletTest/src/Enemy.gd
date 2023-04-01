@@ -3,6 +3,7 @@ extends Area2D
 class_name Enemy
 
 const BulletObj = preload("res://src/Bullet.tscn")
+const HIT_TIMER = 0.5
 
 # --------------------------------
 # class.
@@ -48,10 +49,11 @@ var _cnt2 = 0
 var _cnt3 = 0
 var _target = Vector2.ZERO
 var _start = Vector2.ZERO
+var _hit_timer = 0.0
 
 func hit(velocity:Vector2) -> void:
-	# TODO: ヒット処理.
-	pass
+	# ヒット処理.
+	_hit_timer = HIT_TIMER
 
 func _ready() -> void:
 	_target = position
@@ -62,6 +64,7 @@ func _physics_process(delta: float) -> void:
 	_cnt += 1
 	
 	_update_batteies(delta)
+	_update_hit(delta)
 	
 	# 移動処理.
 	match type:
@@ -198,3 +201,17 @@ func _update_batteies(delta:float) -> void:
 		tmp.append(b)
 	
 	_batteries = tmp
+
+func _update_hit(delta:float) -> void:
+	if _hit_timer <= 0:
+		_spr.offset = Vector2.ZERO
+		return
+	
+	_hit_timer -= delta
+	var rate = _hit_timer / HIT_TIMER
+	var dx = 24.0 * rate
+	if _cnt%4 < 2:
+		dx *= -1
+	var dy = 24.0 * randf_range(-rate, rate)
+	_spr.offset.x = dx
+	_spr.offset.y = dy

@@ -94,7 +94,7 @@ func _update_line2d() -> void:
 		var a = _line.points[i]
 		var b = _line.points[i+1]
 		# 0.5の重みで線形補間します
-		_line.points[i+1] = b.linear_interpolate(a, 0.5)
+		_line.points[i+1] = b.lerp(a, 0.5)
 
 func _on_Shot2_area_entered(area: Area2D) -> void:
 	vanish()
