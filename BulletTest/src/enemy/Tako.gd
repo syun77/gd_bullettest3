@@ -5,6 +5,7 @@ class_name Tako
 var _is_left = false
 
 func _physics_process(delta: float) -> void:
+	_update_hit(delta)
 	_is_left = position.x < 1024/2
 	var mod = 1
 	if _is_left == false:
@@ -51,5 +52,4 @@ func _physics_process(delta: float) -> void:
 					# 消滅する.
 					queue_free()
 		
-	_update_batteies(delta)	
-	_update_hit(delta)
+	_update_batteies(delta)

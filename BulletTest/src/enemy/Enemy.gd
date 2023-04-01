@@ -200,13 +200,19 @@ func _physics_process(delta: float) -> void:
 					for d3 in [-d2, d2]:
 						var tako = Common.add_tako(position, 90+d3, 800)
 						tako.type = eType.ROLLING_WINDER
-				elif t < 380:
-					# 針弾を発射.
-					if t%40 == 0:
-						for i in range(5):
-							var sp = 400 + t * 0.5
-							var delay = i * 0.03
-							_bullet(aim, sp, delay)
+				elif t < 460:
+					# リング弾を発射.
+					if t%60 == 0:
+						var r = 16 + t * 0.2
+						for i in range(16):
+							var sp = 200 + t * 1
+							var b = _bullet(aim, sp)
+							var d = 2 * PI * i / 16
+							b.position.x += r * cos(d)
+							b.position.y += r * -sin(d)
+							var dir = Common.get_target() - b.position
+							var aim2 = rad_to_deg(atan2(-dir.y, dir.x))
+							b.set_velocity(aim2, sp)
 				else:
 					pass
 				
@@ -216,11 +222,11 @@ func _aim() -> float:
 	return Common.get_aim(position)
 
 ## 弾を撃つ.
-func _bullet(deg:float, speed:float, delay:float=0, ax:float=0, ay:float=0) -> void:
+func _bullet(deg:float, speed:float, delay:float=0, ax:float=0, ay:float=0):
 	if delay > 0.0:
 		# 遅延発射なのでリストに追加するだけ.
 		_add_battery(deg, speed, delay, ax, ay)
-		return
+		return null
 	
 	# 発射する.
 	var b = BULLET_OBJ.instantiate()
@@ -229,6 +235,7 @@ func _bullet(deg:float, speed:float, delay:float=0, ax:float=0, ay:float=0) -> v
 	b.set_accel(ax, ay)
 	var bullets = Common.get_layer("bullet")
 	bullets.add_child(b)
+	return b
 
 ## N-Wayを撃つ
 ## @param n 発射数.
