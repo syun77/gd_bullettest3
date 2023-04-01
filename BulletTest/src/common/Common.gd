@@ -72,3 +72,9 @@ func diff_angle(now:float, next:float) -> float:
 	if d > 180.0:
 		d -= 360.0
 	return d
+
+
+var is_destroy = false
+var is_absorb = false
+var is_reflect = false
+var is_buzz = false

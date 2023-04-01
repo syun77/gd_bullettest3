@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://c4yc62525550"]
+[gd_scene load_steps=7 format=3 uid="uid://c4yc62525550"]
 
 [ext_resource type="Script" path="res://src/Player.gd" id="1_cj14x"]
 [ext_resource type="Texture2D" uid="uid://cqb5bm6r51a1s" path="res://assets/images/barrier2.png" id="2_itc5y"]
+[ext_resource type="Texture2D" uid="uid://duix0v2h72ihf" path="res://assets/images/fighter_a.png" id="2_y03y7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iph73"]
 radius = 12.0416
@@ -15,13 +16,9 @@ radius = 50.01
 [node name="Player" type="Area2D"]
 script = ExtResource("1_cj14x")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_left = -16.0
-offset_top = -16.0
-offset_right = 16.0
-offset_bottom = 16.0
-color = Color(0.333333, 0.858824, 1, 1)
-metadata/_edit_group_ = true
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_y03y7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_iph73")

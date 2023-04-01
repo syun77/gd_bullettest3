@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://csv7dbikssj2k"]
+[gd_scene load_steps=11 format=3 uid="uid://csv7dbikssj2k"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://c4yc62525550" path="res://src/Player.tscn" id="2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c00ex15hxlaf3" path="res://assets/images/bg_back.png" id="2_dvhl6"]
 [ext_resource type="Texture2D" uid="uid://5qrlsfujxd2s" path="res://assets/images/bg_sky.png" id="3_n2fpg"]
 [ext_resource type="PackedScene" uid="uid://d1qafkk0j0lc" path="res://src/Enemy.tscn" id="4"]
+[ext_resource type="Theme" uid="uid://cnbovrq5bcj74" path="res://assets/fonts/new_theme.tres" id="7_xiel3"]
 
 [sub_resource type="ShaderMaterial" id="2"]
 shader = ExtResource("2_2pdhv")
@@ -60,7 +61,7 @@ position = Vector2(512, 512)
 [node name="Enemy" parent="MainLayer" instance=ExtResource("4")]
 position = Vector2(512, 128)
 scale = Vector2(0.5, 0.5)
-type = 7
+type = 5
 
 [node name="ShotLayer" type="CanvasLayer" parent="."]
 layer = 4
@@ -76,6 +77,45 @@ environment = SubResource("Environment_w5alp")
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 layer = 10
+
+[node name="CheckBoxDestroy" type="CheckBox" parent="UILayer"]
+offset_left = 16.0
+offset_top = 8.0
+offset_right = 76.0
+offset_bottom = 39.0
+text = "敵弾破壊"
+
+[node name="CheckBoxAbsorb" type="CheckBox" parent="UILayer"]
+offset_left = 16.0
+offset_top = 40.0
+offset_right = 76.0
+offset_bottom = 71.0
+text = "吸収"
+
+[node name="CheckBoxReflect" type="CheckBox" parent="UILayer"]
+offset_left = 16.0
+offset_top = 72.0
+offset_right = 76.0
+offset_bottom = 103.0
+text = "跳ね返し"
+
+[node name="CheckBoxBuzz" type="CheckBox" parent="UILayer"]
+offset_left = 16.0
+offset_top = 104.0
+offset_right = 92.0
+offset_bottom = 135.0
+text = "かすり"
+
+[node name="Copyright" type="Label" parent="UILayer"]
+offset_left = 792.0
+offset_top = 568.0
+offset_right = 1016.0
+offset_bottom = 591.0
+theme = ExtResource("7_xiel3")
+theme_override_colors/font_color = Color(0.756863, 0.756863, 0.756863, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 1
+text = "自機素材：有限会社エムツー様"
 
 [node name="MainCamera" type="Camera2D" parent="."]
 position = Vector2(512, 300)

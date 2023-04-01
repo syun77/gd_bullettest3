@@ -8,32 +8,49 @@ const ABSORB_OBJ = preload("res://src/particle/Absorb.tscn")
 
 const TIMER_BARRIER_HIT = 1.0
 const TIMER_LASER = (0.016 * 16)
+const TIMER_MOVE = 0.1
 
 @onready var _spr = $Sprite
+@onready var _barrier = $Barrier
 @onready var _barrier_spr = $Barrier/Sprite
+@onready var _barrier_col = $Barrier/CollisionShape2D
 
 var _shot_timer = 0.0
 var _shot_cnt = 0
 var _absorb_timer = 0.0
 var _absorb_scale_base = Vector2.ONE
 var _laser_timer = 0.0
+var _move_timer = 0.0
+var _spr_base_sc = Vector2.ONE
 
 func _ready() -> void:
 	_absorb_scale_base = _barrier_spr.scale
+	_spr_base_sc = _spr.scale
 
 func _physics_process(delta: float) -> void:
+	
+	if Common.is_absorb:
+		_barrier.visible = true
+		_barrier_col.disabled = false
+	else:
+		_barrier.visible = false
+		_barrier_col.disabled = true
 	
 	_shot(delta)
 	
 	_update_absorb(delta)
 	
+	_upate_anim(delta)
+	
 	var v = Vector2()
 	if Input.is_action_pressed("ui_left"):
 		v.x += -1
+		_move_timer = TIMER_MOVE
 	if Input.is_action_pressed("ui_up"):
 		v.y += -1
 	if Input.is_action_pressed("ui_right"):
 		v.x += 1
+		_move_timer = TIMER_MOVE
 	if Input.is_action_pressed("ui_down"):
 		v.y += 1
 	
@@ -94,6 +111,14 @@ func _update_absorb(delta:float) -> void:
 	if rate > 0.9:
 		rate = 0.9
 	_barrier_spr.scale = _absorb_scale_base * (1.0 - rate * 0.1)
+	
+func _upate_anim(delta:float) -> void:
+	_move_timer -= delta
+	if _move_timer < 0.0:
+		_move_timer = 0.0
+	var rate = _move_timer / TIMER_MOVE
+	var sc = _spr_base_sc.x - 0.3 * rate
+	_spr.scale = Vector2(sc, _spr_base_sc.y)
 	
 # 弾力関数
 const ELASTIC_AMPLITUDE = 1.0

@@ -3,6 +3,11 @@ extends Area2D
 class_name Bullet
 
 const ITEM_OBJ = preload("res://src/Item.tscn")
+const BUZZ_OBJ = preload("res://src/particle/BuzzEffect.tscn")
+
+const BUZZ_SIZE = 40.0
+
+@onready var _spr = $Sprite
 
 var _velocity = Vector2.ZERO # 速度.
 var _accel = Vector2.ZERO # 加速度.
@@ -38,9 +43,40 @@ func _physics_process(delta: float) -> void:
 	
 	if Common.is_in_screen(position) == false:
 		queue_free()
+	
+	# カスリ判定.
+	if _check_buzz():
+		is_buzz = true
+		var buzz = BUZZ_OBJ.instantiate()
+		Common.get_layer("particle").add_child(buzz)
+		var d = position - Common.get_target()
+		var deg = rad_to_deg(atan2(-d.y, d.x))
+		deg += randf_range(-10, 10)
+		buzz.setup(position, deg, 1000)
+	
+	_spr.modulate = Color.WHITE
+	if is_buzz:
+		_spr.modulate = Color.RED
+	is_buzz = false
+
+func _check_buzz() -> bool:
+	if Common.is_buzz == false:
+		return false
+	
+	var dist = Common.get_dist(position)
+	if dist < BUZZ_SIZE:
+		return true
+	return false
 
 func _on_area_entered(area: Area2D) -> void:
 	if area is Shot:
 		if area.is_erase_bullet():
 			add_item()
 			vanish()
+
+## カスリ状態かどうか.
+var is_buzz = false:
+	set(b):
+		is_buzz = b
+	get:
+		return is_buzz 

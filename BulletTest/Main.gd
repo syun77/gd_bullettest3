@@ -9,6 +9,11 @@ extends Node2D
 @onready var _shot_layer = $ShotLayer
 @onready var _bullet_layer = $BulletLayer
 @onready var _particle_layer = $ParticleLayer
+## UI
+@onready var _checkbox_destroy = $UILayer/CheckBoxDestroy
+@onready var _checkbox_absorb = $UILayer/CheckBoxAbsorb
+@onready var _checkbox_reflect = $UILayer/CheckBoxReflect
+@onready var _checkbox_buzz = $UILayer/CheckBoxBuzz
 
 func _ready() -> void:
 	DisplayServer.window_set_size(Vector2i(1024*2, 600*2))
@@ -22,4 +27,10 @@ func _ready() -> void:
 	Common.setup(layers, _player)
 
 func _process(delta: float) -> void:
-	pass
+	_update_ui()
+
+func _update_ui() -> void:
+	Common.is_destroy = _checkbox_destroy.button_pressed
+	Common.is_absorb = _checkbox_absorb.button_pressed
+	Common.is_reflect = _checkbox_reflect.button_pressed
+	Common.is_buzz = _checkbox_buzz.button_pressed

@@ -10,7 +10,7 @@ var _velocity = Vector2()
 var _spr_list = []
 
 func is_erase_bullet() -> bool:
-	return true
+	return Common.is_destroy
 
 func vanish() -> void:
 	# 逆方向にパーティクルを発生させる.

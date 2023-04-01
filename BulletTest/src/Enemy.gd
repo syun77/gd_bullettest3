@@ -35,6 +35,7 @@ enum eType {
 	GRAVITY,
 	GRAVITY2,
 	NEEDLE,
+	NEEDLE_3WAY,
 	WHIP,
 	NWAY,
 	NWAY_4_5,
@@ -124,6 +125,12 @@ func _physics_process(delta: float) -> void:
 				for i in range(5):
 					var delay = i * 0.05
 					_bullet(aim, 500, delay)
+		eType.NEEDLE_3WAY:
+			if _cnt%240 == 10:
+				for j in range(3):
+					for i in range(5):
+						var delay = i * 0.05 + j * 1.0
+						_nway(3+j, aim, 60, 200+j*20, delay)
 		eType.WHIP:
 			if _cnt%120 == 0:
 				# ウィップ弾を発射
