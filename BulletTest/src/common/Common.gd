@@ -1,6 +1,6 @@
 extends Node
 
-const ParticleObj = preload("res://Particle.tscn")
+const ParticleObj = preload("res://src/particle/Particle.tscn")
 const TIMER_SCREEN_SHAKE = 1.0
 
 # 画面のサイズ.

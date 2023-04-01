@@ -2,8 +2,8 @@ extends Node2D
 
 class_name Player
 
-const ShotObj = preload("res://Shot.tscn")
-const Shot2Obj = preload("res://Shot2.tscn")
+const ShotObj = preload("res://src/shot/Shot.tscn")
+const Shot2Obj = preload("res://src/shot/Shot2.tscn")
 
 var _shot_timer = 0.0
 var _shot_cnt = 0

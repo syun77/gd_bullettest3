@@ -1,50 +1,19 @@
-[gd_scene load_steps=11 format=3 uid="uid://dnhy8fs3suabs"]
+[gd_scene load_steps=10 format=3 uid="uid://csv7dbikssj2k"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1"]
-[ext_resource type="PackedScene" uid="uid://c4yc62525550" path="res://Player.tscn" id="2"]
-[ext_resource type="PackedScene" uid="uid://b66q8jh4c7rng" path="res://Enemy.tscn" id="4"]
-[ext_resource type="Texture2D" uid="uid://c00ex15hxlaf3" path="res://bg_back.png" id="5"]
-[ext_resource type="Texture2D" uid="uid://5qrlsfujxd2s" path="res://bg_sky.png" id="6"]
-
-[sub_resource type="Shader" id="1"]
-code = "// CanvasItemのシェーダーであることを宣言
-shader_type canvas_item;
-
-// UV値のオフセット値
-uniform vec2 ofs_uv;
-
-// フラグメントシェーダー
-void fragment() {
-    // 色を取得
-    vec4 color = texture(TEXTURE, vec2(UV.x+TIME*0.1, UV.y));
-
-    // 反映
-    COLOR = color;
-}"
+[ext_resource type="PackedScene" uid="uid://c4yc62525550" path="res://src/Player.tscn" id="2"]
+[ext_resource type="Shader" path="res://assets/shader/uv_scroll.gdshader" id="2_2pdhv"]
+[ext_resource type="Texture2D" uid="uid://c00ex15hxlaf3" path="res://assets/images/bg_back.png" id="2_dvhl6"]
+[ext_resource type="Texture2D" uid="uid://5qrlsfujxd2s" path="res://assets/images/bg_sky.png" id="3_n2fpg"]
+[ext_resource type="PackedScene" uid="uid://d1qafkk0j0lc" path="res://src/Enemy.tscn" id="4"]
 
 [sub_resource type="ShaderMaterial" id="2"]
-shader = SubResource("1")
-shader_parameter/ofs_uv = null
-
-[sub_resource type="Shader" id="3"]
-code = "// CanvasItemのシェーダーであることを宣言
-shader_type canvas_item;
-
-// UV値のオフセット値
-uniform vec2 ofs_uv;
-
-// フラグメントシェーダー
-void fragment() {
-    // 色を取得
-    vec4 color = texture(TEXTURE, vec2(UV.x+TIME*0.05, UV.y));
-
-    // 反映
-    COLOR = color;
-}"
+shader = ExtResource("2_2pdhv")
+shader_parameter/scroll_speed = 0.05
 
 [sub_resource type="ShaderMaterial" id="4"]
-shader = SubResource("3")
-shader_parameter/ofs_uv = null
+shader = ExtResource("2_2pdhv")
+shader_parameter/scroll_speed = 0.05
 
 [sub_resource type="Environment" id="5"]
 background_mode = 4
@@ -66,17 +35,15 @@ scale = Vector2(1.28, 1.28)
 transform = Transform2D(1.28, 0, 0, 1.28, 0, 0)
 
 [node name="BgBack" type="Sprite2D" parent="BgLayer"]
-modulate = Color(0.537255, 0.537255, 0.537255, 1)
 texture_repeat = 2
 material = SubResource("2")
-texture = ExtResource("5")
+texture = ExtResource("2_dvhl6")
 centered = false
 
 [node name="BgSky" type="Sprite2D" parent="BgLayer"]
-modulate = Color(0.537255, 0.537255, 0.537255, 1)
 texture_repeat = 2
 material = SubResource("4")
-texture = ExtResource("6")
+texture = ExtResource("3_n2fpg")
 centered = false
 
 [node name="MainLayer" type="CanvasLayer" parent="."]

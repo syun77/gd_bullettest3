@@ -13,11 +13,10 @@ config_version=5
 config/name="gd_bullettest3"
 run/main_scene="res://Main.tscn"
 config/features=PackedStringArray("4.0")
-config/icon="res://icon.png"
 
 [autoload]
 
-Common="*res://Common.gd"
+Common="*res://src/common/Common.gd"
 
 [display]
 

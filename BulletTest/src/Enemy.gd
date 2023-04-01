@@ -2,7 +2,7 @@ extends Area2D
 
 class_name Enemy
 
-const BulletObj = preload("res://Bullet.tscn")
+const BulletObj = preload("res://src/Bullet.tscn")
 
 # --------------------------------
 # class.
