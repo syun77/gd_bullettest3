@@ -5,10 +5,10 @@ extends Node2D
 
 @onready var _player = $MainLayer/Player
 @onready var _main_layer = $MainLayer
+
 @onready var _shot_layer = $ShotLayer
 @onready var _bullet_layer = $BulletLayer
 @onready var _particle_layer = $ParticleLayer
-@onready var _hdr = $WorldEnvironment
 
 func _ready() -> void:
 	DisplayServer.window_set_size(Vector2i(1024*2, 600*2))
