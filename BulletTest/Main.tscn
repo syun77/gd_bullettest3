@@ -1,11 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://csv7dbikssj2k"]
+[gd_scene load_steps=11 format=3 uid="uid://bqbpju5y8u6p2"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://c4yc62525550" path="res://src/Player.tscn" id="2"]
 [ext_resource type="Shader" path="res://assets/shader/uv_scroll.gdshader" id="2_2pdhv"]
 [ext_resource type="Texture2D" uid="uid://c00ex15hxlaf3" path="res://assets/images/bg_back.png" id="2_dvhl6"]
 [ext_resource type="Texture2D" uid="uid://5qrlsfujxd2s" path="res://assets/images/bg_sky.png" id="3_n2fpg"]
-[ext_resource type="PackedScene" uid="uid://d1qafkk0j0lc" path="res://src/Enemy.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://dgal4fl506wwy" path="res://src/enemy/Enemy.tscn" id="4"]
 [ext_resource type="Theme" uid="uid://cnbovrq5bcj74" path="res://assets/fonts/new_theme.tres" id="7_xiel3"]
 
 [sub_resource type="ShaderMaterial" id="2"]
@@ -60,8 +60,7 @@ position = Vector2(512, 512)
 
 [node name="Enemy" parent="MainLayer" instance=ExtResource("4")]
 position = Vector2(512, 128)
-scale = Vector2(0.5, 0.5)
-type = 10
+type = 11
 
 [node name="ShotLayer" type="CanvasLayer" parent="."]
 layer = 4

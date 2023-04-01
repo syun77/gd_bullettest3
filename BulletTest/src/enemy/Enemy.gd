@@ -2,7 +2,8 @@ extends Area2D
 
 class_name Enemy
 
-const BulletObj = preload("res://src/Bullet.tscn")
+const BULLET_OBJ = preload("res://src/Bullet.tscn")
+
 const HIT_TIMER = 0.5
 
 # --------------------------------
@@ -27,7 +28,7 @@ class DelayedBatteryInfo:
 		return false
 
 
-@onready var _spr = $Enemy
+@onready var _spr = $Sprite
 
 enum eType {
 	AIM,
@@ -41,8 +42,9 @@ enum eType {
 	NWAY_4_5,
 	NWAY_AND_MOVE,
 	SIDE_WINDER,
+	ROLLING_WINDER,
 }
-@export var type := eType.AIM
+@export var type = eType.AIM
 
 var _cnt = 0
 var _timer = 0.0
@@ -52,14 +54,29 @@ var _cnt3 = 0
 var _target = Vector2.ZERO
 var _start = Vector2.ZERO
 var _hit_timer = 0.0
+var _velocity = Vector2.ZERO
+
+func get_velocity() -> Vector2:
+	return _velocity
+func set_velocity(v:Vector2) -> void:
+	_velocity = v
+func get_couunt() -> int:
+	return _cnt
 
 func hit(velocity:Vector2) -> void:
 	# ヒット処理.
 	_hit_timer = HIT_TIMER
 
+func setup(pos:Vector2, deg:float, speed:float) -> void:
+	position = pos
+	var rad = deg_to_rad(deg)
+	_velocity.x = speed * cos(rad)
+	_velocity.y = speed * -sin(rad)
+
 func _ready() -> void:
 	_target = position
 	_start = position
+	_cnt = -1
 
 func _physics_process(delta: float) -> void:
 	_timer += delta
@@ -158,11 +175,12 @@ func _physics_process(delta: float) -> void:
 		eType.SIDE_WINDER:
 			var t = _cnt%500
 			if t%2 == 0:
-				var d = 60
 				var spd = 1000
-				if t < 60:
-					for v in [-d, -d/2, d/2, d]:
-						_bullet(270+v, spd)
+				if t == 0:
+					var d2 = 70
+					for d3 in [-d2, d2]:
+						var tako = Common.add_tako(position, 90+d3, 800)
+						tako.type = eType.SIDE_WINDER
 				elif t < 380:
 					# 針弾を発射.
 					if t%20 == 0:
@@ -171,10 +189,24 @@ func _physics_process(delta: float) -> void:
 							var sp = 300 + t
 							var delay = i * 0.02
 							_bullet(d2, sp, delay)
-					t -= 60
-					for v in [-d, -d/2, d/2, d]:
-						var d2 = 30 * sin(t*0.03)
-						_bullet(270+v+d2, spd)
+				else:
+					pass
+		eType.ROLLING_WINDER:
+			var t = _cnt%500
+			if t%2 == 0:
+				var spd = 1000
+				if t == 0:
+					var d2 = 90
+					for d3 in [-d2, d2]:
+						var tako = Common.add_tako(position, 90+d3, 800)
+						tako.type = eType.ROLLING_WINDER
+				elif t < 380:
+					# 針弾を発射.
+					if t%40 == 0:
+						for i in range(5):
+							var sp = 400 + t * 0.5
+							var delay = i * 0.03
+							_bullet(aim, sp, delay)
 				else:
 					pass
 				
@@ -191,7 +223,7 @@ func _bullet(deg:float, speed:float, delay:float=0, ax:float=0, ay:float=0) -> v
 		return
 	
 	# 発射する.
-	var b = BulletObj.instantiate()
+	var b = BULLET_OBJ.instantiate()
 	b.position = position
 	b.set_velocity(deg, speed)
 	b.set_accel(ax, ay)

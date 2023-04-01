@@ -66,7 +66,10 @@ func _physics_process(delta: float) -> void:
 		v.y += 1
 	
 	v = v.normalized()
-	position += 300 * v * delta
+	var speed = 300
+	if Input.is_action_pressed("ui_accept"):
+		speed = 200
+	position += speed * v * delta
 
 func _shot(delta:float) -> void:
 	_shot_timer -= delta
@@ -87,6 +90,8 @@ func _shot(delta:float) -> void:
 	if Input.is_action_pressed("ui_accept") == false:
 		return
 	if _shot_timer > 0:
+		return
+	if Common.get_layer("shot").get_child_count() > 8:
 		return
 	
 	_shot_timer = 0.04
@@ -117,11 +122,14 @@ func _update_absorb(delta:float) -> void:
 	if _absorb_timer <= 0.0:
 		return
 	_absorb_timer -= delta
-	var rate = _absorb_timer / TIMER_BARRIER_HIT
-	rate = elastic_in(rate)
+	var t = _absorb_timer / TIMER_BARRIER_HIT
+	var rate = elastic_in(t)
+	var is_shake = t > 0.9
 	if rate > 0.9:
 		rate = 0.9
 	_barrier_spr.scale = _absorb_scale_base * (1.0 - rate * 0.1)
+	if is_shake:
+		_barrier_spr.scale += Vector2.ONE * randf_range(-0.07, 0.07)
 	
 func _update_option(delta:float) -> void:
 	if Common.is_guard:

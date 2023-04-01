@@ -1,6 +1,8 @@
 extends Node
 
 const PARTICLE_OBJ = preload("res://src/particle/Particle.tscn")
+const TAKO_OBJ = preload("res://src/enemy/Tako.tscn")
+
 const TIMER_SCREEN_SHAKE = 1.0
 
 # 画面のサイズ.
@@ -61,6 +63,13 @@ func add_particle(pos:Vector2, t:float, deg:float, speed:float):
 	p.start(t, deg, speed)
 	get_layer("particle").add_child(p)
 	return p
+
+func add_tako(pos:Vector2, deg:float, speed:float):
+	var tako = TAKO_OBJ.instantiate()
+	Common.get_layer("main").add_child(tako)
+	tako.setup(pos, deg, speed)
+	return tako
+
 
 ## 角度差を求める.
 func diff_angle(now:float, next:float) -> float:
