@@ -1,6 +1,7 @@
 extends Node
 
 const PARTICLE_OBJ = preload("res://src/particle/Particle.tscn")
+const PARTICLE_RING_OBJ = preload("res://src/particle/ParticleRing.tscn")
 const TAKO_OBJ = preload("res://src/enemy/Tako.tscn")
 
 const TIMER_SCREEN_SHAKE = 1.0
@@ -63,6 +64,12 @@ func add_particle(pos:Vector2, t:float, deg:float, speed:float):
 	p.start(t, deg, speed)
 	get_layer("particle").add_child(p)
 	return p
+	
+func add_ring(pos:Vector2, t:float, size:float, color:Color) -> void:
+	var p = PARTICLE_RING_OBJ.instantiate()
+	p.position = pos
+	p.setup(pos, t, size, color)
+	get_layer("particle").add_child(p)
 
 func add_tako(pos:Vector2, deg:float, speed:float):
 	var tako = TAKO_OBJ.instantiate()
@@ -88,3 +95,4 @@ var is_absorb = false
 var is_reflect = false
 var is_buzz = false
 var is_guard = false
+var is_push = false

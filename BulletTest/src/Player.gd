@@ -9,12 +9,19 @@ const ABSORB_OBJ = preload("res://src/particle/Absorb.tscn")
 const TIMER_BARRIER_HIT = 1.0
 const TIMER_LASER = (0.016 * 16)
 const TIMER_MOVE = 0.3
+const TIMER_FORCE = 1.5
+const TIMER_FORCE_INTERVAL = 3.0
+const TIMER_FORCE_READY = 0.5
 
 @onready var _spr = $Sprite
 @onready var _barrier = $Barrier
 @onready var _barrier_spr = $Barrier/Sprite
 @onready var _barrier_col = $Barrier/CollisionShape2D
 @onready var _option = $Option
+@onready var _force = $Force
+@onready var _force_circle = $Force/Circle
+@onready var _force_fill = $Force/Fill
+@onready var _force_prog = $Force/ProgressBar
 
 var _shot_timer = 0.0
 var _shot_cnt = 0
@@ -23,6 +30,9 @@ var _absorb_scale_base = Vector2.ONE
 var _laser_timer = 0.0
 var _move_timer = 0.0
 var _spr_base_sc = Vector2.ONE
+var _force_timer = 0.0
+var _force_interval = 0.0
+var _force_timer_ready = 0.0
 
 func _ready() -> void:
 	_absorb_scale_base = _barrier_spr.scale
@@ -50,6 +60,8 @@ func _physics_process(delta: float) -> void:
 	_update_absorb(delta)
 	
 	_update_option(delta)
+	
+	_update_force(delta)
 	
 	_update_anim(delta)
 	
@@ -85,6 +97,9 @@ func _shot(delta:float) -> void:
 		# 力の解放.
 		_laser_timer = TIMER_LASER
 		_shot_laser()
+		for i in range(3):
+			Common.add_ring(position, 1.0 - (0.2*i), 128 + (4 * i), Color.WHITE)
+		
 		return
 		
 	if Input.is_action_pressed("ui_accept") == false:
@@ -144,6 +159,58 @@ func _update_option(delta:float) -> void:
 			obj.process_mode = Node.PROCESS_MODE_DISABLED
 		
 	_option.rotation += delta * 8
+	
+func _update_force(delta:float) -> void:
+	if Common.is_push == false:
+		_force.visible = false
+		return # 無効
+
+	_force.visible = true
+	if _force_timer > 0:
+		_force_circle.visible = false
+		var rate = _force_timer / TIMER_FORCE
+		_force_fill.visible = true
+		_force_fill.modulate.a = rate
+		_force_timer -= delta
+		_push_bullets()
+		if _force_timer <= 0.0:
+			# インターバル開始.
+			_force_interval = TIMER_FORCE_INTERVAL
+		return
+		
+	_force_fill.visible = false
+	if _force_interval > 0:
+		_force_prog.visible = true
+		_force_interval -= delta
+		_force_prog.value = 1 - (_force_interval / TIMER_FORCE_INTERVAL)
+		if _force_interval <= 0.0:
+			for i in range(3):
+				Common.add_ring(position, 1.0 - (0.2*i), 256 + (4 * i), Color.GREEN_YELLOW)
+			_force_timer_ready = TIMER_FORCE_READY
+		return
+	if _force_timer_ready > 0.0:
+		_force_timer_ready -= delta
+		var rate = 1 - _force_timer_ready / TIMER_FORCE_READY
+		var sc = Ease.elastic_out(rate)
+		_force_circle.scale = Vector2(sc, sc)
+	else:
+		_force_circle.scale = Vector2.ONE
+	_force_prog.visible = false
+	_force_circle.visible = true
+		
+	if Input.is_action_just_pressed("ui_menu"):
+		_force_timer = TIMER_FORCE
+		_push_bullets()
+		
+func _push_bullets() -> void:
+	for bullet in Common.get_layer("bullet").get_children():
+		var b:Bullet = bullet
+		var length = position.distance_to(b.position)
+		if length > 128:
+			continue # 範囲外.
+		# 押し返し開始.
+		b.push()
+	
 	
 func _update_anim(delta:float) -> void:
 	if _move_timer > TIMER_MOVE:

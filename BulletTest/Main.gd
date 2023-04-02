@@ -44,5 +44,6 @@ func _update_ui() -> void:
 	Common.is_reflect = _checkbox_reflect.button_pressed
 	Common.is_buzz = _checkbox_buzz.button_pressed
 	Common.is_guard = _checkbox_guard.button_pressed
+	Common.is_push = _checkbox_push.button_pressed
 	
 	_enemy.type = _optionbtn_enemy.selected

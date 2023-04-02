@@ -11,10 +11,17 @@ const BUZZ_SIZE = 40.0
 
 var _velocity = Vector2.ZERO # 速度.
 var _accel = Vector2.ZERO # 加速度.
+var _push_velocity = Vector2.ZERO
 
 ## 消滅.
 func vanish() -> void:
 	queue_free()
+
+## 押し返し開始.
+func push() -> void:
+	var spd = _velocity.length()
+	var v = _velocity.normalized() * -1
+	_push_velocity = v * (1000 + spd)
 
 ## 移動方向を取得する.
 func get_direction() -> float:
@@ -45,7 +52,12 @@ func set_accel(ax:float, ay:float) -> void:
 ## 更新
 func _physics_process(delta: float) -> void:
 	_velocity += _accel
-	position += _velocity * delta
+	_push_velocity *= 0.97
+	if (_velocity.length() - _push_velocity.length()) < 0:
+		modulate = Color.CORNFLOWER_BLUE
+	else:
+		modulate = Color.WHITE
+	position += (_velocity + _push_velocity) * delta
 	
 	if Common.is_in_screen(position) == false:
 		queue_free()

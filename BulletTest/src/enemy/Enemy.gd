@@ -167,10 +167,11 @@ func _physics_process(delta: float) -> void:
 					_nway(4, 270, 80, 200)
 				_cnt2 += 1
 		eType.NWAY_AND_MOVE:
-			if _cnt%120 == 0:
-				for i in range(7):
-					var d = _cnt2%3
-					_nway(3+d, aim, 60, 300+50*i, 0.1 * i)
+			if _cnt%60 == 0:
+				var d = _cnt2%4
+				if d < 3:
+					for i in range(7):
+						_nway(3+d, aim, 60+(d*8), 300+50*i, 0.1 * i)
 				_cnt2 += 1
 		eType.SIDE_WINDER:
 			var t = _cnt%500

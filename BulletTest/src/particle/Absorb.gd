@@ -17,4 +17,5 @@ func _physics_process(delta: float) -> void:
 	position += d * _timer * 2
 
 	if position.distance_to(target) < 4:
+		Common.add_ring(target, 0.5, 96, Color.CYAN)
 		queue_free()
