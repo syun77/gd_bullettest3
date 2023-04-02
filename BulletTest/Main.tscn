@@ -120,6 +120,13 @@ offset_bottom = 199.0
 text = "ガード
 "
 
+[node name="CheckBoxDummy" type="CheckBox" parent="UILayer"]
+offset_left = 16.0
+offset_top = 200.0
+offset_right = 108.0
+offset_bottom = 231.0
+text = "[ダミー]"
+
 [node name="Copyright" type="Label" parent="UILayer"]
 offset_left = 792.0
 offset_top = 568.0
