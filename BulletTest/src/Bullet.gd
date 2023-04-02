@@ -12,6 +12,8 @@ const BUZZ_SIZE = 40.0
 var _velocity = Vector2.ZERO # 速度.
 var _accel = Vector2.ZERO # 加速度.
 var _push_velocity = Vector2.ZERO
+var _push_start_pos = Vector2.ZERO # 打ち返し開始時の座標.
+var _push_start_speed = 0.0
 
 ## 消滅.
 func vanish() -> void:
@@ -20,8 +22,16 @@ func vanish() -> void:
 ## 押し返し開始.
 func push() -> void:
 	var spd = _velocity.length()
+	var push_spd = _push_velocity.length()
+	if push_spd - spd > 0:
+		return # 押し返しは動かない.
+	
 	var v = _velocity.normalized() * -1
-	_push_velocity = v * (1000 + spd)
+	if spd < 1500:
+		spd = (1500 - spd)
+	_push_velocity = v * spd
+	_push_start_pos = position
+	_push_start_speed = spd
 
 ## 移動方向を取得する.
 func get_direction() -> float:
@@ -54,7 +64,7 @@ func _physics_process(delta: float) -> void:
 	_velocity += _accel
 	_push_velocity *= 0.97
 	if (_velocity.length() - _push_velocity.length()) < 0:
-		modulate = Color.CORNFLOWER_BLUE
+		modulate = Color.AQUA
 	else:
 		modulate = Color.WHITE
 	position += (_velocity + _push_velocity) * delta
@@ -76,6 +86,8 @@ func _physics_process(delta: float) -> void:
 	if is_buzz:
 		_spr.modulate = Color.RED
 	is_buzz = false
+	
+	queue_redraw()
 
 func _check_buzz() -> bool:
 	if Common.is_buzz == false:
@@ -85,6 +97,24 @@ func _check_buzz() -> bool:
 	if dist < BUZZ_SIZE:
 		return true
 	return false
+
+func _draw() -> void:
+	var spd = _velocity.length()
+	var push_spd = _push_velocity.length()
+	var d = push_spd - spd
+	if d <= 0:
+		return
+	
+	var rate = d / _push_start_speed
+	var p1 = Vector2.ZERO
+	var p2 = _push_start_pos - position
+	var color = Color.WHITE
+	color.a = rate
+	var width = 8 * rate
+	if width < 2:
+		width = 2
+	draw_line(p1, p2, color, width)
+	
 
 func _on_area_entered(area: Area2D) -> void:
 	if area is Shot:
