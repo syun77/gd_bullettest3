@@ -2,7 +2,7 @@ extends Area2D
 
 class_name Enemy
 
-const BULLET_OBJ = preload("res://src/Bullet.tscn")
+@export var BULLET_OBJ:PackedScene
 
 const HIT_TIMER = 0.5
 
