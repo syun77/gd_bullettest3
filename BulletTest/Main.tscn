@@ -82,6 +82,7 @@ offset_left = 16.0
 offset_top = 8.0
 offset_right = 76.0
 offset_bottom = 39.0
+theme = ExtResource("7_xiel3")
 text = "敵弾破壊"
 
 [node name="CheckBoxAbsorb" type="CheckBox" parent="UILayer"]
@@ -89,6 +90,7 @@ offset_left = 16.0
 offset_top = 40.0
 offset_right = 76.0
 offset_bottom = 71.0
+theme = ExtResource("7_xiel3")
 text = "吸収"
 
 [node name="CheckBoxReflect" type="CheckBox" parent="UILayer"]
@@ -96,6 +98,7 @@ offset_left = 16.0
 offset_top = 72.0
 offset_right = 76.0
 offset_bottom = 103.0
+theme = ExtResource("7_xiel3")
 text = "跳ね返し"
 
 [node name="CheckBoxBuzz" type="CheckBox" parent="UILayer"]
@@ -103,6 +106,7 @@ offset_left = 16.0
 offset_top = 104.0
 offset_right = 92.0
 offset_bottom = 135.0
+theme = ExtResource("7_xiel3")
 text = "かすり"
 
 [node name="CheckBoxPush" type="CheckBox" parent="UILayer"]
@@ -110,6 +114,7 @@ offset_left = 16.0
 offset_top = 136.0
 offset_right = 92.0
 offset_bottom = 167.0
+theme = ExtResource("7_xiel3")
 text = "押し返し"
 
 [node name="CheckBoxGuard" type="CheckBox" parent="UILayer"]
@@ -117,6 +122,7 @@ offset_left = 16.0
 offset_top = 168.0
 offset_right = 108.0
 offset_bottom = 199.0
+theme = ExtResource("7_xiel3")
 text = "ガード
 "
 
@@ -125,6 +131,7 @@ offset_left = 16.0
 offset_top = 200.0
 offset_right = 108.0
 offset_bottom = 231.0
+theme = ExtResource("7_xiel3")
 text = "[ダミー]"
 
 [node name="Copyright" type="Label" parent="UILayer"]
@@ -143,6 +150,7 @@ offset_left = 8.0
 offset_top = 248.0
 offset_right = 112.0
 offset_bottom = 268.0
+theme = ExtResource("7_xiel3")
 
 [node name="MainCamera" type="Camera2D" parent="."]
 position = Vector2(512, 300)
